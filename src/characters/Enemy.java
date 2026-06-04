@@ -1,5 +1,6 @@
 package characters;
-//test
+//test2
+
 import interfaces.Combatant;
 
 public class Enemy extends GameCharacter {
