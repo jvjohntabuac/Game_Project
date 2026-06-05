@@ -74,11 +74,22 @@ public class RoomSelectionGUI extends JFrame {
         btn.setMaximumSize(new Dimension(500, 50));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
-
+        
         btn.addActionListener(e -> {
-            new BattleGUI(omori, room, this).setVisible(true);
-        });
+    if (room.isCleared()) {
+        JOptionPane.showMessageDialog(this, "This room is already cleared!");
+        return;
+    }
+    Enemy nextEnemy = room.getNextEnemy();
+    if (nextEnemy == null) {
+        JOptionPane.showMessageDialog(this, "No enemies here!");
+        return;
+    }
+    new BattleGUI(omori, nextEnemy, room, this).setVisible(true);
+    setVisible(false);
+});
 
+        
         return btn;
     }
 
