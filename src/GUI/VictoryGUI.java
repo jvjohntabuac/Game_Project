@@ -36,7 +36,7 @@ public class VictoryGUI extends JFrame {
             roomSelection.refreshRooms();
             roomSelection.setVisible(true);
             dispose();
-            //changes
+            //changess
         });
         panel.add(Box.createVerticalGlue());
         panel.add(title);
