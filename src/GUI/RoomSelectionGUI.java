@@ -13,6 +13,7 @@ public class RoomSelectionGUI extends JFrame {
 
     private Player omori;
     private ArrayList<Room> rooms;
+    private JScrollPane scrollPane;
 
     public RoomSelectionGUI(Player omori) {
         this.omori = omori;
@@ -23,6 +24,14 @@ public class RoomSelectionGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        buildPanel();
+    }
+
+    private void buildPanel() {
+        if (scrollPane != null) {
+            remove(scrollPane);
+        }
 
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(Color.BLACK);
@@ -59,9 +68,15 @@ public class RoomSelectionGUI extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(inventoryBtn);
 
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane = new JScrollPane(mainPanel);
         scrollPane.getViewport().setBackground(Color.BLACK);
         add(scrollPane);
+    }
+
+    public void refreshRooms() {
+        buildPanel();
+        revalidate();
+        repaint();
     }
 
     private JButton createRoomButton(Room room) {
@@ -74,22 +89,21 @@ public class RoomSelectionGUI extends JFrame {
         btn.setMaximumSize(new Dimension(500, 50));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
-        
-        btn.addActionListener(e -> {
-    if (room.isCleared()) {
-        JOptionPane.showMessageDialog(this, "This room is already cleared!");
-        return;
-    }
-    Enemy nextEnemy = room.getNextEnemy();
-    if (nextEnemy == null) {
-        JOptionPane.showMessageDialog(this, "No enemies here!");
-        return;
-    }
-    new BattleGUI(omori, nextEnemy, room, this).setVisible(true);
-    setVisible(false);
-});
 
-        
+        btn.addActionListener(e -> {
+            if (room.isCleared()) {
+                JOptionPane.showMessageDialog(this, "This room is already cleared!");
+                return;
+            }
+            Enemy nextEnemy = room.getNextEnemy();
+            if (nextEnemy == null) {
+                JOptionPane.showMessageDialog(this, "No enemies here!");
+                return;
+            }
+            new BattleGUI(omori, nextEnemy, room, this).setVisible(true);
+            setVisible(false);
+        });
+
         return btn;
     }
 

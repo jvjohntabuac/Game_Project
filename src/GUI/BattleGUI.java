@@ -34,7 +34,6 @@ public class BattleGUI extends JFrame {
         mainPanel.setBackground(Color.BLACK);
         mainPanel.setLayout(new BorderLayout());
 
-        // Status panel
         JPanel statusPanel = new JPanel();
         statusPanel.setBackground(Color.BLACK);
         statusPanel.setLayout(new GridLayout(2, 2));
@@ -60,7 +59,6 @@ public class BattleGUI extends JFrame {
         statusPanel.add(playerHPLabel);
         statusPanel.add(enemyHPLabel);
 
-        // Battle log
         battleLog = new JTextArea();
         battleLog.setBackground(Color.BLACK);
         battleLog.setForeground(Color.WHITE);
@@ -71,7 +69,6 @@ public class BattleGUI extends JFrame {
         JScrollPane logScroll = new JScrollPane(battleLog);
         logScroll.getViewport().setBackground(Color.BLACK);
 
-        // Action buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.BLACK);
         buttonPanel.setLayout(new GridLayout(2, 2, 10, 10));
@@ -104,7 +101,13 @@ public class BattleGUI extends JFrame {
         updateHP();
 
         if (!enemy.isAlive()) {
+            omori.gainExp(enemy.getExpReward());
             battleLog.append(enemy.getName() + " was defeated!\n");
+            battleLog.append("OMORI gained " + enemy.getExpReward() + " EXP!\n");
+            if (room.allEnemiesDefeated()) {
+                room.clearRoom();
+                battleLog.append(room.getName() + " has been cleared!\n");
+            }
             Item loot = room.getRandomLoot();
             if (loot != null) {
                 omori.getInventory().addItem(loot);
